@@ -17,9 +17,16 @@ pipeline {
             }
         }
         stage('Deliver') {
-            steps {
-                sh './jenkins/scripts/deliver.sh'
-            }
-        }
+          steps {
+              script {
+            def name = sh(script: "mvn -q -DforceStdout help:evaluate -Dexpression=project.name | sed -E 's/\\x1B\\[[0-9;]*[mK]//g'", returnStdout: true).trim()
+            def version = sh(script: "mvn -q -DforceStdout help:evaluate -Dexpression=project.version | sed -E 's/\\x1B\\[[0-9;]*[mK]//g'", returnStdout: true).trim()
+            
+            echo "Running: target/${name}-${version}.jar"
+            sh "java -jar target/${name}-${version}.jar"
+                }
+               }
+           }
+
     }
 }
