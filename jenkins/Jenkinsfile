@@ -26,11 +26,6 @@ pipeline {
             sh "java -jar target/${name}-${version}.jar"
                 }
                }
-           }
-        stage('Complete') {
-            steps {
-                echo 'job is complete!!'
-            }
         }
 
     }
